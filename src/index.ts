@@ -1,3 +1,4 @@
+import { ethers } from "ethers";
 import "./styles.css";
 import { Keypair } from "@solana/web3.js";
 import * as bip39 from "bip39";
@@ -46,11 +47,10 @@ function generateSolanaWallet(uid: string, password: string): SolanaWalletKeys {
 
   const mnemonic = bip39.entropyToMnemonic(seedBuffer);
 
-  const seed = bip39.mnemonicToSeedSync(mnemonic);
-  const keypair = Keypair.fromSeed(seed.slice(0, 32));
+  const wallet = ethers.Wallet.fromPhrase(mnemonic);
 
   return {
-    privateKey: keypair.secretKey.toString("base58"),
-    publicKey: keypair.publicKey.toBase58(),
+    privateKey: wallet.privateKey,
+    publicKey: wallet.publicKey,
   };
 }
